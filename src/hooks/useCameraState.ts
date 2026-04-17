@@ -18,7 +18,7 @@ type CameraMode = 'follow' | 'free'
 
 interface UseCameraStateOptions {
   turtlePosRef: MutableRefObject<Vec2>
-  worldRef: RefObject<HTMLDivElement>
+  worldRef: RefObject<HTMLDivElement | null>
 }
 
 export function useCameraState({ turtlePosRef, worldRef }: UseCameraStateOptions) {

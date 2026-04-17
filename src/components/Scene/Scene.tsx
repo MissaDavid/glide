@@ -19,7 +19,7 @@ const BUBBLES = [
 
 interface SceneProps {
   children: ReactNode
-  worldRef: RefObject<HTMLDivElement>
+  worldRef: RefObject<HTMLDivElement | null>
   onPointerDown: (e: PointerEvent) => void
   onPointerMove: (e: PointerEvent) => void
   onPointerUp: () => void
