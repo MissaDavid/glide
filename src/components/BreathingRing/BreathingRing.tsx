@@ -6,9 +6,11 @@ interface BreathingRingProps {
   phase: Phase
   phaseDuration: number
   visible: boolean
+  worldX: number
+  worldY: number
 }
 
-export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingProps) {
+export function BreathingRing({ phase, phaseDuration, visible, worldX, worldY }: BreathingRingProps) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -25,7 +27,11 @@ export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingPr
   const transitionDuration = isHold ? 0.3 : phaseDuration
 
   return (
-    <div className="breathing-ring-wrapper" data-phase={phase}>
+    <div
+      className="breathing-ring-wrapper"
+      data-phase={phase}
+      style={{ left: worldX, top: worldY }}
+    >
       <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
         <circle
           className="breathing-ring-circle"
