@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import './BreathingRing.css'
 import type { Phase } from '../../constants/breathingPatterns'
 
@@ -8,13 +9,23 @@ interface BreathingRingProps {
 }
 
 export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingProps) {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    if (!visible) { setReady(false); return }
+    const id = requestAnimationFrame(() => setReady(true))
+    return () => cancelAnimationFrame(id)
+  }, [visible])
+
   if (!visible) return null
 
-  const expanded = phase === 'inhale' || phase === 'hold-in'
-  const scale = expanded ? 1.35 : 0.85
+  const isHold = phase === 'hold-in' || phase === 'hold-out'
+  const expandedPhase = phase === 'inhale' || phase === 'hold-in'
+  const scale = ready && expandedPhase ? 1.35 : 0.85
+  const transitionDuration = isHold ? 0.3 : phaseDuration
 
   return (
-    <div className="breathing-ring-wrapper">
+    <div className="breathing-ring-wrapper" data-phase={phase}>
       <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
         <circle
           className="breathing-ring-circle"
@@ -26,7 +37,7 @@ export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingPr
           strokeWidth="2"
           style={{
             transform: `scale(${scale})`,
-            transition: `transform ${phaseDuration}s ease-in-out`,
+            transition: `transform ${transitionDuration}s ease-in-out`,
           }}
         />
         <circle
@@ -39,7 +50,7 @@ export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingPr
           strokeWidth="1"
           style={{
             transform: `scale(${scale})`,
-            transition: `transform ${phaseDuration * 1.1}s ease-in-out`,
+            transition: `transform ${isHold ? transitionDuration : transitionDuration * 1.1}s ease-in-out`,
           }}
         />
       </svg>
