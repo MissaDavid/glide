@@ -33,7 +33,7 @@ export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingPr
           cy="140"
           r="110"
           fill="none"
-          stroke="rgba(126, 207, 207, 0.25)"
+          stroke="rgba(255, 255, 255, 0.55)"
           strokeWidth="2"
           style={{
             transform: `scale(${scale})`,
@@ -46,7 +46,7 @@ export function BreathingRing({ phase, phaseDuration, visible }: BreathingRingPr
           cy="140"
           r="125"
           fill="none"
-          stroke="rgba(126, 207, 207, 0.1)"
+          stroke="rgba(255, 255, 255, 0.25)"
           strokeWidth="1"
           style={{
             transform: `scale(${scale})`,

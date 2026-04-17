@@ -37,6 +37,14 @@
   animation: spot-pulse-bright 1.2s ease-in-out infinite;
 }
 
+.turtle-wrapper[data-state='breathing'] .shell-spot-overlay,
+.turtle-wrapper[data-state='reward'] .shell-spot-overlay {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
 /* ── Calm state ──────────────────────────────── */
 .turtle-svg[data-state='calm'] {
   animation: drift 6s ease-in-out infinite;
