@@ -1,11 +1,16 @@
 /* ── Wrapper ─────────────────────────────────── */
 .turtle-wrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
   width: 520px;
   height: 308px;
+}
+
+/* ── Flip + tilt layer ───────────────────────── */
+.turtle-flip {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
 }
 
 .turtle-svg {
@@ -21,13 +26,11 @@
   top: 20%;
   left: 40%;
   transform: translate(-50%, -50%);
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   cursor: pointer;
   animation: spot-pulse 3s ease-in-out infinite;
-  width: 56px;
-  height: 56px;
   border: 1.5px solid rgba(255, 255, 255, 0.7);
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(126, 207, 207, 0.25);
@@ -115,5 +118,3 @@
 @keyframes reward-settle {
   to { transform: translateY(0) rotate(0deg); }
 }
-
-/* glow-bloom: re-enable when SVG is inlined with #glow-layer group */
