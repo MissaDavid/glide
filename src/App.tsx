@@ -18,7 +18,7 @@ export default function App() {
   const { muted, setMuted, playChime } = useAudio()
 
   const breathingActive = state === 'breathing'
-  const { phase, secondsLeft, isComplete } = useBreathing(pattern, breathingActive)
+  const { phase, isComplete } = useBreathing(pattern, breathingActive)
 
   const currentPattern = BREATHING_PATTERNS[pattern]
   const currentPhaseConfig = currentPattern.phases.find(p => p.phase === phase)
@@ -49,10 +49,9 @@ export default function App() {
   }, [state, dispatch])
 
   // Phase transition chime
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state === 'breathing') playChime()
-  }, [phase])
+  }, [phase, state, playChime])
 
   return (
     <Scene>
