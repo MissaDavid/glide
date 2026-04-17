@@ -18,16 +18,19 @@
 /* Interactive overlay positioned over the shell */
 .shell-spot-overlay {
   position: absolute;
-  top: 44%;
-  left: 51%;
+  top: 20%;
+  left: 40%;
   transform: translate(-50%, -50%);
   width: 52px;
   height: 52px;
   border-radius: 50%;
   cursor: pointer;
   animation: spot-pulse 3s ease-in-out infinite;
-  border: 1.5px solid rgba(126, 207, 207, 0.45);
-  background: rgba(126, 207, 207, 0.08);
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(126, 207, 207, 0.25);
 }
 
 .turtle-wrapper[data-state='anxious'] .shell-spot-overlay {
@@ -58,13 +61,13 @@
 }
 
 @keyframes spot-pulse {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.65; }
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 6px rgba(255,255,255,0.2), 0 0 16px rgba(126,207,207,0.15); }
+  50%       { opacity: 1;   box-shadow: 0 0 12px rgba(255,255,255,0.5), 0 0 28px rgba(126,207,207,0.35); }
 }
 
 @keyframes spot-pulse-bright {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 24px rgba(126,207,207,0.3); }
+  50%       { opacity: 1;   box-shadow: 0 0 18px rgba(255,255,255,0.7), 0 0 40px rgba(126,207,207,0.5); }
 }
 
 /* ── Anxious state ───────────────────────────── */
