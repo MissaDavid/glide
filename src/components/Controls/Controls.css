@@ -39,25 +39,26 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  border: 1px solid rgba(126, 207, 207, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   overflow: hidden;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px);
+  background: rgba(4, 20, 36, 0.72);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   z-index: 50;
 }
 
 .pattern-option {
-  padding: 6px 16px;
+  padding: 7px 18px;
   font-size: 10px;
   letter-spacing: 1.5px;
-  color: rgba(126, 207, 207, 0.35);
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  background: rgba(6, 26, 46, 0.5);
   transition: color 0.2s, background 0.2s;
   user-select: none;
 }
 
 .pattern-option.selected {
-  color: rgba(126, 207, 207, 0.85);
-  background: rgba(126, 207, 207, 0.1);
+  color: #fff;
+  background: rgba(126, 207, 207, 0.2);
 }
