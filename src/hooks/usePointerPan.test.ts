@@ -1,11 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
+import type { PointerEvent } from 'react'
 import { renderHook } from '@testing-library/react'
 import { usePointerPan } from './usePointerPan'
 
-function makePointerEvent(x: number, y: number, target?: Element): React.PointerEvent {
+function makePointerEvent(x: number, y: number, target?: Element): PointerEvent {
   const el = target ?? document.createElement('div')
   ;(el as HTMLElement).setPointerCapture = vi.fn()
-  return { clientX: x, clientY: y, target: el, currentTarget: el, pointerId: 1 } as unknown as React.PointerEvent
+  return { clientX: x, clientY: y, target: el, currentTarget: el, pointerId: 1 } as unknown as PointerEvent
 }
 
 describe('usePointerPan', () => {

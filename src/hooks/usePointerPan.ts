@@ -1,4 +1,5 @@
 import { useRef, useCallback } from 'react'
+import type { PointerEvent } from 'react'
 
 interface UsePointerPanOptions {
   onStart: () => void
@@ -10,7 +11,7 @@ export function usePointerPan({ onStart, onDelta, shouldIgnore }: UsePointerPanO
   const dragging = useRef(false)
   const lastPos = useRef<{ x: number; y: number } | null>(null)
 
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
+  const onPointerDown = useCallback((e: PointerEvent) => {
     if (shouldIgnore(e.target)) return
     dragging.current = true
     lastPos.current = { x: e.clientX, y: e.clientY }
@@ -18,7 +19,7 @@ export function usePointerPan({ onStart, onDelta, shouldIgnore }: UsePointerPanO
     ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   }, [onStart, shouldIgnore])
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
+  const onPointerMove = useCallback((e: PointerEvent) => {
     if (!dragging.current || !lastPos.current) return
     const dx = e.clientX - lastPos.current.x
     const dy = e.clientY - lastPos.current.y
