@@ -18,7 +18,7 @@ export function Controls({ muted, onToggleMute, hr, onHrChange, pattern, onPatte
 
   return (
     <>
-      <div className="controls-top-right">
+      <div className="controls-top-right" data-no-pan="true">
         <button
           className={`control-icon ${!muted ? 'active' : ''}`}
           onClick={onToggleMute}
@@ -43,7 +43,7 @@ export function Controls({ muted, onToggleMute, hr, onHrChange, pattern, onPatte
         />
       )}
 
-      <div className="pattern-pill">
+      <div className="pattern-pill" data-no-pan="true">
         {(['box', '478'] as PatternName[]).map(p => (
           <div
             key={p}

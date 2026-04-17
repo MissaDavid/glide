@@ -1,12 +1,25 @@
 .scene {
   position: fixed;
   inset: 0;
-  background: url('/background.svg') center/cover no-repeat;
+  background: #061a2e;
   overflow: hidden;
+  cursor: grab;
 }
 
-/* Bubbles */
-.scene-bubbles {
+.scene:active {
+  cursor: grabbing;
+}
+
+.world {
+  position: absolute;
+  width: 4000px;
+  height: 3000px;
+  background: url('/background.svg') repeat;
+  background-size: 100vw auto;
+  will-change: transform;
+}
+
+.world-bubbles {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -31,13 +44,4 @@
     transform: translateY(-105vh) translateX(15px);
     opacity: 0;
   }
-}
-
-/* Content sits above background layers */
-.scene-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
