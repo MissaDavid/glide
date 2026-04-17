@@ -24,4 +24,6 @@ dist-ssr
 *.sw?
 
 .superpowers/
+.serena/
+.playwright-mcp/
 public/audio/*.mp3
