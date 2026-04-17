@@ -27,3 +27,4 @@ dist-ssr
 .serena/
 .playwright-mcp/
 public/audio/*.mp3
+.worktrees/
