@@ -116,7 +116,6 @@ All states are CSS classes on `<g id="turtle">`.
 ### Reward — `.state-reward`
 - Turtle returns to center
 - Glow layer fades in fully (SVG `<feGaussianBlur>` filter, CSS opacity animation)
-- Turtle scales up by accumulated `growthScale` from `useRewards`
 - Chime plays at session completion
 - After ~3s, auto-transitions back to calm
 
@@ -181,10 +180,9 @@ Managed by `useRewards`, persisted to `localStorage`.
 | Property | Behaviour |
 |---|---|
 | `sessionCount` | Increments on each completed breathing session |
-| `growthScale` | Starts at `1.0`, increments `+0.03` per session, capped at `1.5` |
 | `glowLevel` | Integer 0–5, increments every 5 sessions, affects baseline shell-spot brightness |
 
-On session completion: glow animation plays (~3s), turtle scale updates, chime fires.
+On session completion: glow animation plays (~3s), chime fires. Full reward system design (visual growth, achievements, etc.) deferred to post-MVP once the core experience is in place.
 
 ---
 
@@ -193,7 +191,7 @@ On session completion: glow animation plays (~3s), turtle scale updates, chime f
 **Unit tests (Vitest):**
 - `useBreathing` — phase sequencing and timing for both patterns
 - `useTurtleState` — all state transitions including HR threshold trigger
-- `useRewards` — localStorage read/write, growth cap enforcement
+- `useRewards` — localStorage read/write, session count and glow level increments
 
 **Manual:** animation correctness (breathing ring sync, turtle movement, glow) verified during development.
 
