@@ -1,4 +1,5 @@
 import './Scene.css'
+import type { ReactNode, RefObject, PointerEvent, CSSProperties } from 'react'
 
 const BUBBLES = [
   { left: 200,  size: 5, duration: '9s',  delay: '0s'  },
@@ -17,11 +18,11 @@ const BUBBLES = [
 ]
 
 interface SceneProps {
-  children: React.ReactNode
-  worldRef: React.RefObject<HTMLDivElement>
-  onPointerDown: (e: React.PointerEvent) => void
-  onPointerMove: (e: React.PointerEvent) => void
-  onPointerUp: (e: React.PointerEvent) => void
+  children: ReactNode
+  worldRef: RefObject<HTMLDivElement>
+  onPointerDown: (e: PointerEvent) => void
+  onPointerMove: (e: PointerEvent) => void
+  onPointerUp: (e: PointerEvent) => void
 }
 
 export function Scene({ children, worldRef, onPointerDown, onPointerMove, onPointerUp }: SceneProps) {
@@ -45,7 +46,7 @@ export function Scene({ children, worldRef, onPointerDown, onPointerMove, onPoin
                 height: b.size,
                 '--duration': b.duration,
                 '--delay': b.delay,
-              } as React.CSSProperties}
+              } as CSSProperties}
             />
           ))}
         </div>
