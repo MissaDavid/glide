@@ -72,7 +72,12 @@ The handler ignores events whose target is the turtle's shell overlay or any Con
 
 ## Turtle Navigation (`useTurtleNavigation`)
 
-The turtle has a world-space position `(x, y)` tracked in JS. Each frame the hook advances the turtle toward its current waypoint at ~40 px/sec, rotating gradually to face the direction of travel.
+The turtle has a world-space position `(x, y)` tracked in JS. Each frame the hook advances the turtle toward its current waypoint at ~40 px/sec.
+
+The turtle SVG is a 3/4 perspective low-poly illustration (not top-down), so full 360° rotation is not viable — at 180° the tail leads, at 90° the artwork looks flat and wrong. Instead, orientation uses two layers:
+
+- **Horizontal flip** (`scaleX(-1)`) when the horizontal travel component is leftward
+- **Banking tilt** (±10–15°, driven by the turn direction) layered on top — consistent with the existing `nudge` and `surface-arc` animations
 
 **Waypoint selection:** Random point within the inner 60% of the world (960–3040 px wide, 720–2280 px tall), keeping the turtle away from the world edge.
 
