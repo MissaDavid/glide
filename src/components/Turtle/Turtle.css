@@ -1,0 +1,122 @@
+/* ── Wrapper ─────────────────────────────────── */
+.turtle-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 180px;
+}
+
+.turtle-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── Calm state ──────────────────────────────── */
+.turtle-svg[data-state='calm'] {
+  animation: drift 6s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.turtle-svg[data-state='calm'] #flipper-fl,
+.turtle-svg[data-state='calm'] #flipper-fr {
+  animation: flipper-lazy 3s ease-in-out infinite;
+}
+
+@keyframes flipper-lazy {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg); }
+}
+
+/* ── Ambient surface arc ─────────────────────── */
+.turtle-svg.surfacing {
+  animation: surface-arc 7s ease-in-out forwards !important;
+}
+
+@keyframes surface-arc {
+  0%   { transform: translateY(0) rotate(0deg); }
+  20%  { transform: translateY(-22vh) rotate(-15deg); }
+  50%  { transform: translateY(-22vh) rotate(-10deg); }
+  80%  { transform: translateY(-8vh) rotate(-5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* ── Shell spot ──────────────────────────────── */
+#shell-spot {
+  cursor: pointer;
+  animation: spot-pulse 3s ease-in-out infinite;
+  transition: opacity 0.3s;
+}
+
+@keyframes spot-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.65; }
+}
+
+.turtle-svg[data-state='anxious'] #shell-spot {
+  animation: spot-pulse-bright 1.2s ease-in-out infinite;
+}
+
+@keyframes spot-pulse-bright {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ── Anxious state ───────────────────────────── */
+.turtle-svg[data-state='anxious'] {
+  animation: nudge 2.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes nudge {
+  0%   { transform: translateY(-18vh) rotate(-10deg); }
+  35%  { transform: translateY(-20vh) rotate(-12deg); }
+  50%  { transform: translateY(-21vh) rotate(-13deg); }
+  65%  { transform: translateY(-20vh) rotate(-12deg); }
+  100% { transform: translateY(-18vh) rotate(-10deg); }
+}
+
+/* ── Breathing state ─────────────────────────── */
+.turtle-svg[data-state='breathing'] {
+  transition: transform var(--phase-duration, 4s) ease-in-out;
+}
+
+.turtle-svg[data-state='breathing'][data-phase='inhale'],
+.turtle-svg[data-state='breathing'][data-phase='hold-in'] {
+  transform: translateY(-20vh) rotate(-8deg);
+}
+
+.turtle-svg[data-state='breathing'][data-phase='exhale'],
+.turtle-svg[data-state='breathing'][data-phase='hold-out'] {
+  transform: translateY(0) rotate(0deg);
+}
+
+/* ── Reward state ────────────────────────────── */
+.turtle-svg[data-state='reward'] {
+  animation: reward-settle 0.8s ease-out forwards;
+}
+
+@keyframes reward-settle {
+  to { transform: translateY(0) rotate(0deg); }
+}
+
+#glow-layer {
+  transition: fill 0.5s ease;
+  fill: rgba(126, 207, 207, 0);
+}
+
+.turtle-svg[data-state='reward'] #glow-layer {
+  animation: glow-bloom 3s ease-in-out forwards;
+}
+
+@keyframes glow-bloom {
+  0%   { fill: rgba(126, 207, 207, 0); }
+  40%  { fill: rgba(126, 207, 207, 0.35); }
+  100% { fill: rgba(126, 207, 207, 0); }
+}
