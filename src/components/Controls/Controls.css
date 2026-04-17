@@ -1,0 +1,63 @@
+.controls-top-right {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 50;
+}
+
+.control-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(126, 207, 207, 0.25);
+  background: rgba(6, 26, 46, 0.5);
+  color: rgba(126, 207, 207, 0.5);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.control-icon:hover {
+  border-color: rgba(126, 207, 207, 0.5);
+  color: rgba(126, 207, 207, 0.8);
+}
+
+.control-icon.active {
+  border-color: rgba(126, 207, 207, 0.6);
+  color: #7ecfcf;
+}
+
+.pattern-pill {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  border: 1px solid rgba(126, 207, 207, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+.pattern-option {
+  padding: 6px 16px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: rgba(126, 207, 207, 0.35);
+  cursor: pointer;
+  background: rgba(6, 26, 46, 0.5);
+  transition: color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.pattern-option.selected {
+  color: rgba(126, 207, 207, 0.85);
+  background: rgba(126, 207, 207, 0.1);
+}

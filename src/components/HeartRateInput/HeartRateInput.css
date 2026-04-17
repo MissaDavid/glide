@@ -1,0 +1,45 @@
+.hr-popover {
+  position: fixed;
+  top: 52px;
+  right: 12px;
+  background: rgba(6, 26, 46, 0.92);
+  border: 1px solid rgba(126, 207, 207, 0.2);
+  border-radius: 10px;
+  padding: 16px;
+  width: 220px;
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.hr-popover label {
+  display: block;
+  color: rgba(126, 207, 207, 0.7);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hr-input {
+  width: 100%;
+  background: rgba(126, 207, 207, 0.08);
+  border: 1px solid rgba(126, 207, 207, 0.25);
+  border-radius: 6px;
+  color: #7ecfcf;
+  font-size: 22px;
+  text-align: center;
+  padding: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.hr-input:focus {
+  border-color: rgba(126, 207, 207, 0.5);
+}
+
+.hr-hint {
+  margin-top: 8px;
+  color: rgba(126, 207, 207, 0.4);
+  font-size: 11px;
+  line-height: 1.4;
+}
