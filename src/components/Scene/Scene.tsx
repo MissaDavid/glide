@@ -22,7 +22,7 @@ interface SceneProps {
   worldRef: RefObject<HTMLDivElement>
   onPointerDown: (e: PointerEvent) => void
   onPointerMove: (e: PointerEvent) => void
-  onPointerUp: (e: PointerEvent) => void
+  onPointerUp: () => void
 }
 
 export function Scene({ children, worldRef, onPointerDown, onPointerMove, onPointerUp }: SceneProps) {
