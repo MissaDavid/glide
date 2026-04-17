@@ -67,10 +67,8 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete,
       data-state={state}
       style={{ left: worldX, top: worldY }}
     >
-      <div
-        className="turtle-flip"
-        style={{ transform: `scaleX(${flipScale}) rotate(${tilt}deg)` }}
-      >
+      <div className="turtle-flip" style={{ transform: `scaleX(${flipScale})` }}>
+        <div className="turtle-tilt" style={{ transform: `rotate(${tilt}deg)` }}>
         <img
           ref={svgRef}
           src="/turtle.svg"
@@ -81,6 +79,7 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete,
           alt="Sea turtle"
           draggable={false}
         />
+        </div>
       </div>
       <div
         className="shell-spot-overlay"
