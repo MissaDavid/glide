@@ -8,7 +8,8 @@ import { useBreathing } from './hooks/useBreathing'
 import { useHeartRate } from './hooks/useHeartRate'
 import { useRewards } from './hooks/useRewards'
 import { useAudio } from './hooks/useAudio'
-import { PatternName, BREATHING_PATTERNS } from './constants/breathingPatterns'
+import type { PatternName } from './constants/breathingPatterns'
+import { BREATHING_PATTERNS } from './constants/breathingPatterns'
 
 export default function App() {
   const { state, dispatch } = useTurtleState()

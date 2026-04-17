@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { BreathingPattern, PatternName, Phase, BREATHING_PATTERNS } from '../constants/breathingPatterns'
+import type { BreathingPattern, PatternName, Phase } from '../constants/breathingPatterns'
+import { BREATHING_PATTERNS } from '../constants/breathingPatterns'
 
 export interface BreathingState {
   phase: Phase
