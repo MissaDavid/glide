@@ -16,8 +16,6 @@ interface SceneProps {
 export function Scene({ children }: SceneProps) {
   return (
     <div className="scene">
-      <div className="scene-rays" />
-      <div className="scene-surface" />
       <div className="scene-bubbles">
         {BUBBLES.map((b, i) => (
           <div

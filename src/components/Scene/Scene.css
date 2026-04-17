@@ -1,59 +1,8 @@
 .scene {
   position: fixed;
   inset: 0;
-  background: linear-gradient(180deg, #030d15 0%, #061a2e 50%, #0a2a4a 100%);
+  background: url('/background.svg') center/cover no-repeat;
   overflow: hidden;
-}
-
-/* Caustic light rays */
-.scene-rays {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.scene-rays::before,
-.scene-rays::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 80px;
-  height: 55%;
-  background: linear-gradient(180deg, rgba(126, 207, 207, 0.05), transparent);
-  animation: ray-sway 9s ease-in-out infinite;
-  transform-origin: top center;
-}
-
-.scene-rays::before {
-  left: 25%;
-  animation-delay: 0s;
-}
-
-.scene-rays::after {
-  left: 60%;
-  animation-delay: -4s;
-}
-
-@keyframes ray-sway {
-  0%, 100% { transform: rotate(-4deg) skewX(-3deg); opacity: 0.6; }
-  50% { transform: rotate(4deg) skewX(3deg); opacity: 1; }
-}
-
-/* Surface line */
-.scene-surface {
-  position: absolute;
-  top: 20%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(126, 207, 207, 0.25) 20%,
-    rgba(126, 207, 207, 0.4) 50%,
-    rgba(126, 207, 207, 0.25) 80%,
-    transparent 100%
-  );
 }
 
 /* Bubbles */

@@ -4,14 +4,34 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 220px;
-  height: 180px;
+  width: 520px;
+  height: 308px;
 }
 
 .turtle-svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
+  object-fit: contain;
+  display: block;
+}
+
+/* Interactive overlay positioned over the shell */
+.shell-spot-overlay {
+  position: absolute;
+  top: 44%;
+  left: 51%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  cursor: pointer;
+  animation: spot-pulse 3s ease-in-out infinite;
+  border: 1.5px solid rgba(126, 207, 207, 0.45);
+  background: rgba(126, 207, 207, 0.08);
+}
+
+.turtle-wrapper[data-state='anxious'] .shell-spot-overlay {
+  animation: spot-pulse-bright 1.2s ease-in-out infinite;
 }
 
 /* ── Calm state ──────────────────────────────── */
@@ -22,16 +42,6 @@
 @keyframes drift {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-14px); }
-}
-
-.turtle-svg[data-state='calm'] #flipper-fl,
-.turtle-svg[data-state='calm'] #flipper-fr {
-  animation: flipper-lazy 3s ease-in-out infinite;
-}
-
-@keyframes flipper-lazy {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(8deg); }
 }
 
 /* ── Ambient surface arc ─────────────────────── */
@@ -47,20 +57,9 @@
   100% { transform: translateY(0) rotate(0deg); }
 }
 
-/* ── Shell spot ──────────────────────────────── */
-#shell-spot {
-  cursor: pointer;
-  animation: spot-pulse 3s ease-in-out infinite;
-  transition: opacity 0.3s;
-}
-
 @keyframes spot-pulse {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.65; }
-}
-
-.turtle-svg[data-state='anxious'] #shell-spot {
-  animation: spot-pulse-bright 1.2s ease-in-out infinite;
 }
 
 @keyframes spot-pulse-bright {
@@ -106,17 +105,4 @@
   to { transform: translateY(0) rotate(0deg); }
 }
 
-#glow-layer {
-  transition: fill 0.5s ease;
-  fill: rgba(126, 207, 207, 0);
-}
-
-.turtle-svg[data-state='reward'] #glow-layer {
-  animation: glow-bloom 3s ease-in-out forwards;
-}
-
-@keyframes glow-bloom {
-  0%   { fill: rgba(126, 207, 207, 0); }
-  40%  { fill: rgba(126, 207, 207, 0.35); }
-  100% { fill: rgba(126, 207, 207, 0); }
-}
+/* glow-bloom: re-enable when SVG is inlined with #glow-layer group */
