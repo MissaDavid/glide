@@ -1,9 +1,9 @@
-export const WORLD_W = 4000
-export const WORLD_H = 3000
+export const WORLD_W = 2752
+export const WORLD_H = 1536
 
-export const TURTLE_SPEED = 22          // px/sec
-export const WAYPOINT_MARGIN_X = 800    // 20% of WORLD_W
-export const WAYPOINT_MARGIN_Y = 600    // 20% of WORLD_H
+export const TURTLE_SPEED = 14          // px/sec
+export const WAYPOINT_MARGIN_X = 550    // 20% of WORLD_W
+export const WAYPOINT_MARGIN_Y = 307    // 20% of WORLD_H
 export const ARRIVAL_THRESHOLD = 20     // px — close enough to waypoint
 export const MAX_TILT = 12              // degrees max banking tilt
 

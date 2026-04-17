@@ -12,10 +12,10 @@
 
 .world {
   position: absolute;
-  width: 4000px;
-  height: 3000px;
+  width: 2752px;
+  height: 1536px;
   background: url('/background.svg') no-repeat center;
-  background-size: 100% 100%;
+  background-size: cover;
   will-change: transform;
 }
 
