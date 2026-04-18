@@ -22,6 +22,25 @@ describe('Turtle component', () => {
     expect(container.querySelector('svg')).toBeInTheDocument()
     expect(container.querySelector('img')).not.toBeInTheDocument()
   })
+
+  test('forwards data-state to the svg root', () => {
+    const { container } = render(<Turtle {...baseProps} state="anxious" />)
+    const svg = container.querySelector('svg')!
+    expect(svg.dataset.state).toBe('anxious')
+  })
+
+  test('forwards data-phase to the svg root', () => {
+    const { container } = render(<Turtle {...baseProps} phase="exhale" />)
+    const svg = container.querySelector('svg')!
+    expect(svg.dataset.phase).toBe('exhale')
+  })
+
+  test('forwards --glow-level and --phase-duration CSS vars to the svg root', () => {
+    const { container } = render(<Turtle {...baseProps} glowLevel={0.7} phaseDuration={6} />)
+    const svg = container.querySelector('svg')!
+    expect(svg.style.getPropertyValue('--glow-level')).toBe('0.7')
+    expect(svg.style.getPropertyValue('--phase-duration')).toBe('6s')
+  })
 })
 
 describe('turtle.svg structure', () => {

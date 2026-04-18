@@ -1,13 +1,13 @@
-import { useEffect, useRef, useCallback } from 'react'
-import type { CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
 import type { TurtleState } from '../../hooks/useTurtleState'
 import type { Phase } from '../../constants/breathingPatterns'
 import type { Facing } from '../../hooks/useTurtleNavigation'
+import TurtleSVG from '../../assets/turtle.svg?react'
 import './Turtle.css'
 
 const HOLD_DURATION = 1500
-const SURFACE_ARC_MIN = 3 * 60 * 1000
-const SURFACE_ARC_MAX = 5 * 60 * 1000
+const SURFACE_ARC_MIN = 15_000
+const SURFACE_ARC_MAX = 45_000
 
 interface TurtleProps {
   state: TurtleState
@@ -22,7 +22,7 @@ interface TurtleProps {
 }
 
 export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete, worldX, worldY, facing, tilt }: TurtleProps) {
-  const svgRef = useRef<HTMLImageElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const arcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -69,16 +69,17 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete,
     >
       <div className="turtle-flip" style={{ transform: `scaleX(${flipScale})` }}>
         <div className="turtle-tilt" style={{ transform: `rotate(${tilt}deg)` }}>
-        <img
-          ref={svgRef}
-          src="/turtle.svg"
-          className="turtle-svg"
-          data-state={state}
-          data-phase={phase}
-          style={{ '--phase-duration': `${phaseDuration}s`, '--glow-level': glowLevel } as CSSProperties}
-          alt="Sea turtle"
-          draggable={false}
-        />
+          <TurtleSVG
+            ref={svgRef}
+            className="turtle-svg"
+            data-state={state}
+            data-phase={phase}
+            style={{
+              '--phase-duration': `${phaseDuration}s`,
+              '--glow-level': glowLevel,
+            } as CSSProperties}
+            aria-label="Sea turtle"
+          />
         </div>
       </div>
       <div
