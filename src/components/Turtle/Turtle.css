@@ -126,30 +126,42 @@
 
 /* ── Per-group ambient animations (calm state only) ─── */
 
+/* Front-left flipper: attaches to body at top-right of group */
 svg.turtle-svg[data-state='calm'] #flipper-fl {
   animation: flipper-wave-fl 3.2s ease-in-out infinite;
-  transform-origin: 20% 10%;
+  transform-origin: 85% 5%;
   transform-box: fill-box;
 }
 
+/* Front-right flipper: attaches to body at top-left of group */
 svg.turtle-svg[data-state='calm'] #flipper-fr {
   animation: flipper-wave-fr 3.2s ease-in-out infinite 0.4s;
+  transform-origin: 15% 5%;
+  transform-box: fill-box;
+}
+
+/* Back-left flipper: anchor at top-right of group, very subtle */
+svg.turtle-svg[data-state='calm'] #flipper-bl {
+  animation: flipper-wave-back 4.5s ease-in-out infinite 0.8s;
   transform-origin: 80% 10%;
   transform-box: fill-box;
 }
 
-svg.turtle-svg[data-state='calm'] #flipper-bl,
+/* Back-right flipper: anchor at top-left of group, very subtle */
 svg.turtle-svg[data-state='calm'] #flipper-br {
-  animation: flipper-wave-back 4s ease-in-out infinite 0.8s;
+  animation: flipper-wave-back 4.5s ease-in-out infinite 1.2s;
+  transform-origin: 20% 10%;
   transform-box: fill-box;
 }
 
+/* Head: anchor at base of neck (bottom-left of head group) */
 svg.turtle-svg[data-state='calm'] #head {
-  animation: head-sway 5s ease-in-out infinite;
-  transform-origin: 50% 90%;
+  animation: head-sway 6s ease-in-out infinite;
+  transform-origin: 10% 92%;
   transform-box: fill-box;
 }
 
+/* Pause all group animations during breathing + reward */
 svg.turtle-svg[data-state='breathing'] #flipper-fl,
 svg.turtle-svg[data-state='breathing'] #flipper-fr,
 svg.turtle-svg[data-state='breathing'] #flipper-bl,
@@ -165,23 +177,23 @@ svg.turtle-svg[data-state='reward'] #head {
 
 @keyframes flipper-wave-fl {
   0%, 100% { transform: rotate(0deg); }
-  40%       { transform: rotate(8deg); }
-  70%       { transform: rotate(-4deg); }
+  40%       { transform: rotate(6deg); }
+  70%       { transform: rotate(-3deg); }
 }
 
 @keyframes flipper-wave-fr {
   0%, 100% { transform: rotate(0deg); }
-  40%       { transform: rotate(-8deg); }
-  70%       { transform: rotate(4deg); }
+  40%       { transform: rotate(-6deg); }
+  70%       { transform: rotate(3deg); }
 }
 
 @keyframes flipper-wave-back {
   0%, 100% { transform: rotate(0deg); }
-  50%       { transform: rotate(5deg); }
+  50%       { transform: rotate(2deg); }
 }
 
 @keyframes head-sway {
-  0%, 100% { transform: rotate(0deg) translateY(0); }
-  30%       { transform: rotate(2deg) translateY(-3px); }
-  70%       { transform: rotate(-1deg) translateY(1px); }
+  0%, 100% { transform: rotate(0deg); }
+  30%       { transform: rotate(1deg) translateY(-2px); }
+  70%       { transform: rotate(-0.5deg); }
 }
