@@ -126,24 +126,24 @@
 
 /* ── Per-group ambient animations (calm state only) ─── */
 
-/* Front-left flipper: attaches to body at top-right of group */
+/* Front-left flipper: x=[1716..1962], body is to the LEFT → pivot at left edge */
 svg.turtle-svg[data-state='calm'] #flipper-fl {
   animation: flipper-wave-fl 3.2s ease-in-out infinite;
-  transform-origin: 85% 5%;
+  transform-origin: 0% 15%;
   transform-box: fill-box;
 }
 
-/* Front-right flipper: attaches to body at top-left of group */
+/* Front-right flipper: x=[959..1549], body/shell at top-right → pivot at right edge */
 svg.turtle-svg[data-state='calm'] #flipper-fr {
   animation: flipper-wave-fr 3.2s ease-in-out infinite 0.4s;
-  transform-origin: 15% 5%;
+  transform-origin: 90% 5%;
   transform-box: fill-box;
 }
 
-/* Back-left flipper: anchor at top-right of group, very subtle */
+/* Back-left flipper: x=[1017..1171], body above-right → pivot at top-right corner */
 svg.turtle-svg[data-state='calm'] #flipper-bl {
   animation: flipper-wave-back 4.5s ease-in-out infinite 0.8s;
-  transform-origin: 80% 10%;
+  transform-origin: 100% 0%;
   transform-box: fill-box;
 }
 
@@ -177,19 +177,19 @@ svg.turtle-svg[data-state='reward'] #head {
 
 @keyframes flipper-wave-fl {
   0%, 100% { transform: rotate(0deg); }
-  40%       { transform: rotate(3deg); }
-  70%       { transform: rotate(-2deg); }
+  40%       { transform: rotate(1.5deg); }
+  70%       { transform: rotate(-1deg); }
 }
 
 @keyframes flipper-wave-fr {
   0%, 100% { transform: rotate(0deg); }
-  40%       { transform: rotate(-3deg); }
-  70%       { transform: rotate(2deg); }
+  40%       { transform: rotate(-1.5deg); }
+  70%       { transform: rotate(1deg); }
 }
 
 @keyframes flipper-wave-back {
   0%, 100% { transform: rotate(0deg); }
-  50%       { transform: rotate(2deg); }
+  50%       { transform: rotate(1deg); }
 }
 
 @keyframes head-sway {
