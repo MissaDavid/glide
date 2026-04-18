@@ -43,6 +43,28 @@ describe('Turtle component', () => {
   })
 })
 
+describe('body-part groups accessible in rendered SVG', () => {
+  test('renders #flipper-fl group inside svg when calm', () => {
+    const { container } = render(<Turtle {...baseProps} state="calm" />)
+    expect(container.querySelector('#flipper-fl')).toBeInTheDocument()
+  })
+
+  test('renders #flipper-fr group inside svg', () => {
+    const { container } = render(<Turtle {...baseProps} />)
+    expect(container.querySelector('#flipper-fr')).toBeInTheDocument()
+  })
+
+  test('renders #head group inside svg', () => {
+    const { container } = render(<Turtle {...baseProps} />)
+    expect(container.querySelector('#head')).toBeInTheDocument()
+  })
+
+  test('renders #shell group inside svg', () => {
+    const { container } = render(<Turtle {...baseProps} />)
+    expect(container.querySelector('#shell')).toBeInTheDocument()
+  })
+})
+
 describe('turtle.svg structure', () => {
   let doc: Document
 
