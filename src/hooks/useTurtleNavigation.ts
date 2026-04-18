@@ -34,6 +34,7 @@ export function hasArrived(pos: Vec2, waypoint: Vec2): boolean {
 
 export interface TurtleNavResult {
   posRef: MutableRefObject<Vec2>
+  facingRef: MutableRefObject<Facing>
   worldX: number
   worldY: number
   facing: Facing
@@ -44,6 +45,7 @@ export function useTurtleNavigation(turtleState: TurtleState): TurtleNavResult {
   const posRef = useRef<Vec2>({ x: WORLD_W / 2, y: WORLD_H / 2 })
   const [renderPos, setRenderPos] = useState<Vec2>({ x: WORLD_W / 2, y: WORLD_H / 2 })
   const [orientation, setOrientation] = useState<TurtleOrientation>({ facing: 'right', tilt: 0 })
+  const facingRef = useRef<Facing>('right')
 
   const waypointRef = useRef<Vec2>(pickWaypoint())
   const navStateRef = useRef<NavState>('swimming')
@@ -97,7 +99,9 @@ export function useTurtleNavigation(turtleState: TurtleState): TurtleNavResult {
       const newPos = { x: pos.x + (dx / dist) * step, y: pos.y + (dy / dist) * step }
       posRef.current = newPos
       setRenderPos(newPos)
-      setOrientation(computeOrientation(dx, dy))
+      const newOrientation = computeOrientation(dx, dy)
+      facingRef.current = newOrientation.facing
+      setOrientation(newOrientation)
     }
 
     rafRef.current = requestAnimationFrame(tick)
@@ -106,5 +110,5 @@ export function useTurtleNavigation(turtleState: TurtleState): TurtleNavResult {
     }
   }, [])
 
-  return { posRef, worldX: renderPos.x, worldY: renderPos.y, facing: orientation.facing, tilt: orientation.tilt }
+  return { posRef, facingRef, worldX: renderPos.x, worldY: renderPos.y, facing: orientation.facing, tilt: orientation.tilt }
 }

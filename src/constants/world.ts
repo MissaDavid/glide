@@ -14,3 +14,4 @@ export const SLEEP_MAX = 45000          // ms
 export const SLEEP_CHANCE = 0.3         // 30% chance of long sleep on arrival
 
 export const CAMERA_LERP = 0.06        // interpolation factor per frame
+export const CAMERA_LEAD = 120         // px ahead of turtle to centre the view

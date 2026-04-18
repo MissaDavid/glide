@@ -29,10 +29,10 @@ export default function App() {
   const currentPhaseConfig = currentPattern.phases.find(p => p.phase === phase)
   const phaseDuration = currentPhaseConfig?.duration ?? 4
 
-  const { posRef, worldX, worldY, facing, tilt } = useTurtleNavigation(state)
+  const { posRef, facingRef, worldX, worldY, facing, tilt } = useTurtleNavigation(state)
 
   const worldRef = useRef<HTMLDivElement>(null)
-  const { mode, setMode, applyDragDelta } = useCameraState({ turtlePosRef: posRef, worldRef })
+  const { mode, setMode, applyDragDelta } = useCameraState({ turtlePosRef: posRef, facingRef, worldRef })
 
   const { onPointerDown, onPointerMove, onPointerUp } = usePointerPan({
     onStart: () => setMode('free'),

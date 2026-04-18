@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
-import type { Vec2 } from './useTurtleNavigation'
-import { WORLD_W, WORLD_H, CAMERA_LERP } from '../constants/world'
+import type { Vec2, Facing } from './useTurtleNavigation'
+import { WORLD_W, WORLD_H, CAMERA_LERP, CAMERA_LEAD } from '../constants/world'
 
 export function clampCamera(cam: Vec2, worldW: number, worldH: number, vpW: number, vpH: number): Vec2 {
   return {
@@ -18,10 +18,11 @@ type CameraMode = 'follow' | 'free'
 
 interface UseCameraStateOptions {
   turtlePosRef: MutableRefObject<Vec2>
+  facingRef: MutableRefObject<Facing>
   worldRef: RefObject<HTMLDivElement | null>
 }
 
-export function useCameraState({ turtlePosRef, worldRef }: UseCameraStateOptions) {
+export function useCameraState({ turtlePosRef, facingRef, worldRef }: UseCameraStateOptions) {
   const initialCam: Vec2 = {
     x: -(WORLD_W / 2 - window.innerWidth / 2),
     y: -(WORLD_H / 2 - window.innerHeight / 2),
@@ -52,8 +53,9 @@ export function useCameraState({ turtlePosRef, worldRef }: UseCameraStateOptions
 
       if (modeRef.current === 'follow') {
         const tp = turtlePosRef.current
+        const lead = facingRef.current === 'right' ? CAMERA_LEAD : -CAMERA_LEAD
         targetCamRef.current = clampCamera(
-          { x: -(tp.x - window.innerWidth / 2), y: -(tp.y - window.innerHeight / 2) },
+          { x: -(tp.x + lead - window.innerWidth / 2), y: -(tp.y - window.innerHeight / 2) },
           WORLD_W, WORLD_H, window.innerWidth, window.innerHeight,
         )
       }
