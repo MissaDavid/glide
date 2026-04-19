@@ -89,7 +89,52 @@ All call sites (typically `App.tsx` or the hook wiring) update accordingly.
 | `src/components/Turtle/Turtle.css` | Remove overlay rules; add `#shell-spot` idle, tap, and visibility rules |
 | `src/assets/turtle.svg` | No change — `#shell-spot` group already exists |
 | `src/App.tsx` | Pass `hr` (already from `useHeartRate`) as `heartRate={hr}` to `<Turtle>`; rename `onHoldComplete` → `onSpotTap` |
-| `src/components/Turtle/Turtle.test.tsx` | Update prop names, add test for spot tap handler |
+| `src/components/Turtle/Turtle.test.tsx` | Update prop names, add tests per TDD section below |
+
+---
+
+## Testing (TDD)
+
+Write these tests **before** implementing, following the TDD skill. All tests are in `Turtle.test.tsx`.
+
+### Updates to existing tests
+- `baseProps`: rename `onHoldComplete` → `onSpotTap`, add `heartRate: 60`.
+- `'forwards --glow-level and --phase-duration CSS vars'`: extend to also assert `--pulse-duration` is `'1s'` (60bpm → 60/60).
+
+### New tests to write first
+
+**`--pulse-duration` derivation:**
+```ts
+test('sets --pulse-duration from heartRate', () => {
+  // heartRate=80 → 60/80 = 0.75s
+})
+test('clamps --pulse-duration to 1.5s minimum for low heartRate', () => {
+  // heartRate=30 → clamped to 1.5s, not 2s
+})
+test('clamps --pulse-duration to 0.375s maximum for high heartRate', () => {
+  // heartRate=200 → clamped to 0.375s, not 0.3s
+})
+```
+
+**Tap interaction:**
+```ts
+test('fires onSpotTap when #shell-spot is clicked', () => {
+  // fireEvent.click on #shell-spot element → callback called once
+})
+test('does not fire onSpotTap when clicking outside #shell-spot', () => {
+  // fireEvent.click on svg root (not #shell-spot) → callback not called
+})
+test('adds spot-tapped class to svg on tap, removes it after timeout', () => {
+  // use fake timers; click #shell-spot → class present → advance 1300ms → class gone
+})
+```
+
+**State visibility:**
+```ts
+test('#shell-spot is present in DOM during calm state', () => {})
+test('#shell-spot is present in DOM during anxious state', () => {})
+// CSS opacity/pointer-events are not testable in jsdom — visual-only, verified manually
+```
 
 ---
 
