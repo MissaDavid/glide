@@ -45,6 +45,8 @@ export default function App() {
     if (isExceeded && state === 'calm') {
       dispatch({ type: 'HR_EXCEEDED' })
       playChime()
+    } else if (!isExceeded && state === 'anxious') {
+      dispatch({ type: 'HR_NORMAL' })
     }
   }, [isExceeded, state, dispatch, playChime])
 

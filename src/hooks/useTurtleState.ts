@@ -5,6 +5,7 @@ export type TurtleState = 'calm' | 'anxious' | 'breathing' | 'reward'
 export type TurtleAction =
   | { type: 'HOLD_COMPLETE' }
   | { type: 'HR_EXCEEDED' }
+  | { type: 'HR_NORMAL' }
   | { type: 'BREATHING_COMPLETE' }
   | { type: 'REWARD_COMPLETE' }
 
@@ -15,6 +16,7 @@ export function reducer(state: TurtleState, action: TurtleAction): TurtleState {
       return state
     case 'anxious':
       if (action.type === 'HOLD_COMPLETE') return 'breathing'
+      if (action.type === 'HR_NORMAL') return 'calm'
       return state
     case 'breathing':
       if (action.type === 'BREATHING_COMPLETE') return 'reward'
