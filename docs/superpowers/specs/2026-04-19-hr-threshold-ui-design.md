@@ -21,6 +21,10 @@ Replace the hardcoded 100 bpm threshold and manual HR entry with automatic Garmi
 - In-app Garmin OAuth flow for the friend (deferred — credentials set up once by developer via Netlify env vars)
 - Spike detection (delta-based nudge) — future exploration
 
+## Open Questions / Risks
+
+- **Garmin API rate limits:** The `garmin-connect` package uses Garmin Connect's undocumented internal API. One poll/minute (1440/day) is light but Garmin has blocked aggressive scrapers before. If auth errors appear in production, back off to every 2–5 minutes. Monitor on first deployment.
+
 ---
 
 ## Architecture
@@ -67,6 +71,7 @@ Replaces `useHeartRate`. Manages polling, sustained-elevation detection, cooldow
 | `readings` | `number[]` | No (session only) | `[]` |
 | `threshold` | `number` | `localStorage` | `110` |
 | `cooldownUntil` | `number \| null` | `localStorage` | `null` |
+| `signalLost` | `boolean` | No | `false` |
 
 ### Derived values
 
@@ -79,8 +84,9 @@ Replaces `useHeartRate`. Manages polling, sustained-elevation detection, cooldow
 ### Polling
 
 - `setInterval` every 60 seconds → `fetch('/.netlify/functions/garmin-hr')`
-- On success: push result to buffer, cap at 5 entries (drop oldest)
-- On error or `hr === 0`: buffer unchanged — no false triggers from network blips
+- On success with valid HR: push to buffer, cap at 5 entries (drop oldest)
+- On error (non-200) or `hr === 0`: buffer unchanged — no false triggers from network blips. Set `signalLost = true` to show a warning in the UI.
+- On recovery (next successful reading): clear `signalLost`.
 
 ### `startCooldown()`
 
@@ -95,6 +101,7 @@ Replaces `useHeartRate`. Manages polling, sustained-elevation detection, cooldow
   hr: number
   isExceeded: boolean
   inCooldown: boolean
+  signalLost: boolean       // true when last poll failed or returned hr: 0
   threshold: number
   setThreshold: (n: number) => void
   startCooldown: () => void
@@ -118,8 +125,13 @@ Replaces `useHeartRate`. Manages polling, sustained-elevation detection, cooldow
 The `HeartRateInput` component is repurposed from manual entry to a status + settings panel.
 
 **Removed:**
-- Manual HR number input
+- Manual HR number input (in production)
 - "Do you have a smart watch or a health app?" hint text
+
+**Dev-only manual override:**
+- When `import.meta.env.DEV` is true, a small number input appears below the threshold stepper labelled "Override HR (dev)"
+- Entering a value bypasses Garmin polling for that reading and pushes it directly into the buffer — useful for simulating sustained elevation without real Garmin credentials
+- Not rendered in production builds
 
 **New layout (Option A — Compact):**
 
@@ -139,6 +151,8 @@ The `HeartRateInput` component is repurposed from manual entry to a status + set
 - `−` button disabled at 50, `+` button disabled at 180
 
 **Cooldown indicator:** small muted line below threshold row when cooldown is active (e.g. "cooling down · 24 min left"). Remaining minutes derived in the component as `Math.ceil((cooldownUntil - Date.now()) / 60000)`.
+
+**No-signal indicator:** when `signalLost` is true, replace the HR number with "⚠ no signal" in amber. Threshold stepper remains functional.
 
 ---
 
