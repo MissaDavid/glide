@@ -183,11 +183,10 @@ svg.turtle-svg.spot-tapped #shell-spot {
   100% { filter: brightness(1)   drop-shadow(0 0 4px  rgba(200, 190, 80,  0.2)); }
 }
 
-/* ── Shell spot — hidden during active session ───── */
+/* ── Shell spot — quiet during active session (visible, non-interactive) ── */
 svg.turtle-svg[data-state='breathing'] #shell-spot,
 svg.turtle-svg[data-state='reward'] #shell-spot {
-  opacity: 0;
   pointer-events: none;
   animation: none;
-  transition: opacity 0.4s ease;
+  filter: none;
 }
