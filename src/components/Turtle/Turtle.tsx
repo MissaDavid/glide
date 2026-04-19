@@ -5,7 +5,6 @@ import type { Facing } from '../../hooks/useTurtleNavigation'
 import TurtleSVG from '../../assets/turtle.svg?react'
 import './Turtle.css'
 
-const HOLD_DURATION = 1500
 const SURFACE_ARC_MIN = 15_000
 const SURFACE_ARC_MAX = 45_000
 
@@ -14,17 +13,21 @@ interface TurtleProps {
   phase: Phase
   glowLevel: number
   phaseDuration: number
-  onHoldComplete: () => void
+  heartRate: number
+  onSpotTap: () => void
   worldX: number
   worldY: number
   facing: Facing
   tilt: number
 }
 
-export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete, worldX, worldY, facing, tilt }: TurtleProps) {
+export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSpotTap, worldX, worldY, facing, tilt }: TurtleProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const arcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const safeBpm = heartRate > 0 ? heartRate : 60
+  const pulseDuration = `${parseFloat((Math.min(1.5, Math.max(0.375, 60 / safeBpm))).toFixed(3))}s`
 
   const scheduleArc = useCallback(() => {
     const delay = SURFACE_ARC_MIN + Math.random() * (SURFACE_ARC_MAX - SURFACE_ARC_MIN)
@@ -49,8 +52,8 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete,
   }, [state, scheduleArc])
 
   const handlePointerDown = useCallback(() => {
-    holdTimerRef.current = setTimeout(onHoldComplete, HOLD_DURATION)
-  }, [onHoldComplete])
+    holdTimerRef.current = setTimeout(onSpotTap, 1500)
+  }, [onSpotTap])
 
   const cancelHold = useCallback(() => {
     if (holdTimerRef.current) {
@@ -77,6 +80,7 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, onHoldComplete,
             style={{
               '--phase-duration': `${phaseDuration}s`,
               '--glow-level': glowLevel,
+              '--pulse-duration': pulseDuration,
             } as CSSProperties}
             aria-label="Sea turtle"
           />
