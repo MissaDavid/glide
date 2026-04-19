@@ -25,34 +25,6 @@
   display: block;
 }
 
-/* Interactive overlay positioned over the shell */
-.shell-spot-overlay {
-  position: absolute;
-  top: 20%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  cursor: pointer;
-  animation: spot-pulse 3s ease-in-out infinite;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(126, 207, 207, 0.25);
-}
-
-.turtle-wrapper[data-state='anxious'] .shell-spot-overlay {
-  animation: spot-pulse-bright 1.2s ease-in-out infinite;
-}
-
-.turtle-wrapper[data-state='breathing'] .shell-spot-overlay,
-.turtle-wrapper[data-state='reward'] .shell-spot-overlay {
-  animation: none;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-}
-
 /* ── Calm state ──────────────────────────────── */
 .turtle-svg[data-state='calm'] {
   animation: drift 6s ease-in-out infinite;
@@ -74,16 +46,6 @@
   50%  { transform: translateY(-22vh) rotate(-10deg); }
   80%  { transform: translateY(-8vh) rotate(-5deg); }
   100% { transform: translateY(0) rotate(0deg); }
-}
-
-@keyframes spot-pulse {
-  0%, 100% { opacity: 0.5; box-shadow: 0 0 6px rgba(255,255,255,0.2), 0 0 16px rgba(126,207,207,0.15); }
-  50%       { opacity: 1;   box-shadow: 0 0 12px rgba(255,255,255,0.5), 0 0 28px rgba(126,207,207,0.35); }
-}
-
-@keyframes spot-pulse-bright {
-  0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 24px rgba(126,207,207,0.3); }
-  50%       { opacity: 1;   box-shadow: 0 0 18px rgba(255,255,255,0.7), 0 0 40px rgba(126,207,207,0.5); }
 }
 
 /* ── Anxious state ───────────────────────────── */
@@ -196,4 +158,36 @@ svg.turtle-svg[data-state='reward'] #head {
   0%, 100% { transform: rotate(0deg); }
   30%       { transform: rotate(1deg) translateY(-2px); }
   70%       { transform: rotate(-0.5deg); }
+}
+
+/* ── Shell spot — idle glow (calm + anxious) ─────── */
+svg.turtle-svg[data-state='calm'] #shell-spot,
+svg.turtle-svg[data-state='anxious'] #shell-spot {
+  animation: shell-spot-pulse var(--pulse-duration, 1s) ease-in-out infinite;
+  cursor: pointer;
+}
+
+@keyframes shell-spot-pulse {
+  0%, 100% { filter: brightness(1)    drop-shadow(0 0 4px  rgba(200, 190, 80, 0.2)); }
+  50%       { filter: brightness(1.35) drop-shadow(0 0 14px rgba(220, 210, 100, 0.7)); }
+}
+
+/* ── Shell spot — tap feedback ────────────────────── */
+svg.turtle-svg.spot-tapped #shell-spot {
+  animation: shell-spot-tap 1.2s ease-out forwards;
+}
+
+@keyframes shell-spot-tap {
+  0%   { filter: brightness(2)   drop-shadow(0 0 20px rgba(160, 210, 220, 0.9)); }
+  40%  { filter: brightness(1.6) drop-shadow(0 0 16px rgba(140, 200, 210, 0.6)); }
+  100% { filter: brightness(1)   drop-shadow(0 0 4px  rgba(200, 190, 80,  0.2)); }
+}
+
+/* ── Shell spot — hidden during active session ───── */
+svg.turtle-svg[data-state='breathing'] #shell-spot,
+svg.turtle-svg[data-state='reward'] #shell-spot {
+  opacity: 0;
+  pointer-events: none;
+  animation: none;
+  transition: opacity 0.4s ease;
 }
