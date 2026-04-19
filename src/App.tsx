@@ -86,7 +86,8 @@ export default function App() {
           phase={phase}
           glowLevel={glowLevel}
           phaseDuration={phaseDuration}
-          onHoldComplete={() => dispatch({ type: 'HOLD_COMPLETE' })}
+          heartRate={hr}
+          onSpotTap={() => dispatch({ type: 'HOLD_COMPLETE' })}
           worldX={worldX}
           worldY={worldY}
           facing={facing}

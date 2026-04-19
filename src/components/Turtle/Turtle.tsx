@@ -23,8 +23,8 @@ interface TurtleProps {
 
 export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSpotTap, worldX, worldY, facing, tilt }: TurtleProps) {
   const svgRef = useRef<SVGSVGElement>(null)
-  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const arcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const spotTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const safeBpm = heartRate > 0 ? heartRate : 60
   const pulseDuration = `${parseFloat((Math.min(1.5, Math.max(0.375, 60 / safeBpm))).toFixed(3))}s`
@@ -48,19 +48,24 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
     }
     return () => {
       if (arcTimerRef.current) clearTimeout(arcTimerRef.current)
+      if (spotTapTimerRef.current) clearTimeout(spotTapTimerRef.current)
     }
   }, [state, scheduleArc])
 
-  const handlePointerDown = useCallback(() => {
-    holdTimerRef.current = setTimeout(onSpotTap, 1500)
+  const handlePointerDown = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
+    if (!(e.target as Element).closest('#shell-spot')) return
+    onSpotTap()
+    const el = svgRef.current
+    if (!el) return
+    el.classList.remove('spot-tapped')
+    void (el as unknown as HTMLElement).offsetWidth // force reflow so animation restarts on rapid taps
+    el.classList.add('spot-tapped')
+    if (spotTapTimerRef.current) clearTimeout(spotTapTimerRef.current)
+    spotTapTimerRef.current = setTimeout(() => {
+      el.classList.remove('spot-tapped')
+      spotTapTimerRef.current = null
+    }, 1300)
   }, [onSpotTap])
-
-  const cancelHold = useCallback(() => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current)
-      holdTimerRef.current = null
-    }
-  }, [])
 
   const flipScale = facing === 'left' ? -1 : 1
 
@@ -83,16 +88,10 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
               '--pulse-duration': pulseDuration,
             } as CSSProperties}
             aria-label="Sea turtle"
+            onPointerDown={handlePointerDown}
           />
         </div>
       </div>
-      <div
-        className="shell-spot-overlay"
-        data-no-pan="true"
-        onPointerDown={handlePointerDown}
-        onPointerUp={cancelHold}
-        onPointerLeave={cancelHold}
-      />
     </div>
   )
 }
