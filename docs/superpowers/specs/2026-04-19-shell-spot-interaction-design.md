@@ -1,7 +1,7 @@
 # Shell Spot Interaction — Design Spec
 
 **Date:** 2026-04-19
-**Status:** Approved
+**Status:** Implemented — merged to main 2026-04-19
 
 ---
 
