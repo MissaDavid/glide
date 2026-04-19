@@ -41,12 +41,17 @@ export default function App() {
       target !== null && (target as HTMLElement).closest('[data-no-pan]') !== null,
   })
 
+  const anxiousFromHrRef = useRef(false)
   useEffect(() => {
     if (isExceeded && state === 'calm') {
+      anxiousFromHrRef.current = true
       dispatch({ type: 'HR_EXCEEDED' })
       playChime()
-    } else if (!isExceeded && state === 'anxious') {
+    } else if (!isExceeded && state === 'anxious' && anxiousFromHrRef.current) {
+      anxiousFromHrRef.current = false
       dispatch({ type: 'HR_NORMAL' })
+    } else if (state === 'calm') {
+      anxiousFromHrRef.current = false
     }
   }, [isExceeded, state, dispatch, playChime])
 
