@@ -45,6 +45,15 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
   useEffect(() => {
     if (state === 'calm') {
       scheduleArc()
+    } else {
+      // State left calm — cancel any in-flight tap animation immediately so the
+      // idle pulse for the new state starts without delay
+      const el = svgRef.current
+      if (el) el.classList.remove('spot-tapped')
+      if (spotTapTimerRef.current) {
+        clearTimeout(spotTapTimerRef.current)
+        spotTapTimerRef.current = null
+      }
     }
     return () => {
       if (arcTimerRef.current) clearTimeout(arcTimerRef.current)
@@ -58,7 +67,7 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
     const el = svgRef.current
     if (!el) return
     el.classList.remove('spot-tapped')
-    void (el as unknown as HTMLElement).offsetWidth // force reflow so animation restarts on rapid taps
+    void el.getBoundingClientRect() // force reflow so animation restarts on rapid taps
     el.classList.add('spot-tapped')
     if (spotTapTimerRef.current) clearTimeout(spotTapTimerRef.current)
     spotTapTimerRef.current = setTimeout(() => {
