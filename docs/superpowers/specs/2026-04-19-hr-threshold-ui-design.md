@@ -27,7 +27,7 @@ Replace the hardcoded 100 bpm threshold and manual HR entry with automatic Garmi
 
 - **Garmin API rate limits:** One poll/minute (1440/day) is light but Garmin has blocked aggressive scrapers before. If auth errors appear in production, back off to every 2–5 minutes. Monitor on first deployment.
 
-- **User has AVNRT (AV nodal reentrant tachycardia):** Friend has a diagnosed condition causing episodic tachycardia — HR can spike suddenly to 150–250 bpm during an episode, and baseline is chronically elevated. This affects nudge timing (see below) and makes breathing exercises medically relevant (vagal maneuvers can help terminate SVT episodes). The 5-minute sustained window may need revisiting — see nudge timing section.
+- **User has AVNRT (AV nodal reentrant tachycardia):** Friend has a diagnosed condition causing episodic tachycardia — HR can spike suddenly to 150–250 bpm during an episode, and baseline is chronically elevated. Breathing exercises are medically relevant (vagal maneuvers can help terminate SVT episodes). **Decision:** keep the 5-minute sustained window for now; goal is catching prolonged stress periods, not acute SVT spikes. Revisit after friend has used the app and can give feedback on nudge frequency.
 
 ## Future Tasks
 
