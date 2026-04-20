@@ -23,7 +23,15 @@ Replace the hardcoded 100 bpm threshold and manual HR entry with automatic Garmi
 
 ## Open Questions / Risks
 
-- **Garmin API rate limits:** The `garmin-connect` package uses Garmin Connect's undocumented internal API. One poll/minute (1440/day) is light but Garmin has blocked aggressive scrapers before. If auth errors appear in production, back off to every 2–5 minutes. Monitor on first deployment.
+- **Garmin API access — needs research before implementation:** The official Garmin Health API is enterprise/business only. The `garmin-connect` npm package uses the unofficial web session API and may work for personal use, but needs validation. Alternative lead: [GarminDB](https://github.com/tcgoetz/GarminDB) — a Python tool that syncs Garmin Connect data to a local SQLite DB. GarminDB itself is Python/local and unsuitable for Netlify Functions, but the underlying API calls it makes could inform a Node.js implementation. **Do not start implementation until the data-access approach is confirmed.**
+
+- **Garmin API rate limits:** One poll/minute (1440/day) is light but Garmin has blocked aggressive scrapers before. If auth errors appear in production, back off to every 2–5 minutes. Monitor on first deployment.
+
+- **User has AVNRT (AV nodal reentrant tachycardia):** Friend has a diagnosed condition causing episodic tachycardia — HR can spike suddenly to 150–250 bpm during an episode, and baseline is chronically elevated. This affects nudge timing (see below) and makes breathing exercises medically relevant (vagal maneuvers can help terminate SVT episodes). The 5-minute sustained window may need revisiting — see nudge timing section.
+
+## Future Tasks
+
+- **Water reminder:** Periodically remind the friend to drink water (hydration is relevant for AVNRT management). Timing and delivery TBD — likely a separate feature after core HR monitoring is stable.
 
 ---
 
