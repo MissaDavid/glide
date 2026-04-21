@@ -42,9 +42,9 @@
 
 @keyframes surface-arc {
   0%   { transform: translateY(0) rotate(0deg); }
-  20%  { transform: translateY(-22vh) rotate(-15deg); }
-  50%  { transform: translateY(-22vh) rotate(-10deg); }
-  80%  { transform: translateY(-8vh) rotate(-5deg); }
+  20%  { transform: translateY(-154px) rotate(-15deg); }
+  50%  { transform: translateY(-154px) rotate(-10deg); }
+  80%  { transform: translateY(-56px) rotate(-5deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
@@ -55,11 +55,11 @@
 }
 
 @keyframes nudge {
-  0%   { transform: translateY(-18vh) rotate(-10deg); }
-  35%  { transform: translateY(-20vh) rotate(-12deg); }
-  50%  { transform: translateY(-21vh) rotate(-13deg); }
-  65%  { transform: translateY(-20vh) rotate(-12deg); }
-  100% { transform: translateY(-18vh) rotate(-10deg); }
+  0%   { transform: translateY(-126px) rotate(-10deg); }
+  35%  { transform: translateY(-140px) rotate(-12deg); }
+  50%  { transform: translateY(-147px) rotate(-13deg); }
+  65%  { transform: translateY(-140px) rotate(-12deg); }
+  100% { transform: translateY(-126px) rotate(-10deg); }
 }
 
 /* ── Breathing state ─────────────────────────── */
@@ -69,7 +69,7 @@
 
 .turtle-svg[data-state='breathing'][data-phase='inhale'],
 .turtle-svg[data-state='breathing'][data-phase='hold-in'] {
-  transform: translateY(-20vh) rotate(-8deg);
+  transform: translateY(-140px) rotate(-8deg);
 }
 
 .turtle-svg[data-state='breathing'][data-phase='exhale'],

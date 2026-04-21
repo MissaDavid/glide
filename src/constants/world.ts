@@ -3,7 +3,7 @@ export const WORLD_H = 1536
 
 export const TURTLE_SPEED = 14          // px/sec
 export const WAYPOINT_MARGIN_X = 550    // 20% of WORLD_W
-export const WAYPOINT_MARGIN_Y = 307    // 20% of WORLD_H
+export const WAYPOINT_MARGIN_Y = 400    // ~26% of WORLD_H — keeps turtle low enough that upward animations never clip off screen
 export const ARRIVAL_THRESHOLD = 20     // px — close enough to waypoint
 export const MAX_TILT = 12              // degrees max banking tilt
 

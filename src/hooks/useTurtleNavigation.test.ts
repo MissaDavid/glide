@@ -6,7 +6,7 @@ import {
 } from '../constants/world'
 
 describe('pickWaypoint', () => {
-  it('returns a point within the inner 60% of the world', () => {
+  it('returns a point within the waypoint margins of the world', () => {
     for (let i = 0; i < 50; i++) {
       const wp = pickWaypoint()
       expect(wp.x).toBeGreaterThanOrEqual(WAYPOINT_MARGIN_X)
