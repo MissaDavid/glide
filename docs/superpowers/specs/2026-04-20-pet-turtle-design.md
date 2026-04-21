@@ -13,7 +13,7 @@ Add a "pet" interaction so a friend can show affection to the turtle. Petting is
 
 ## Gesture
 
-**Type:** 2–3 taps within a 1.5s window  
+**Type:** 2 taps minimum within a 1.5s window (fires on the 2nd tap; subsequent taps within the window are ignored until the next window)  
 **Zone:** Anywhere on the turtle body or head, excluding `#shell-spot`  
 **Tap definition:** pointerdown → pointerup within ~300ms with minimal pointer movement (so camera panning doesn't count)  
 **State gate:** Only fires when `turtleState === 'calm'`
@@ -66,9 +66,9 @@ Driven entirely by CSS on named SVG elements — no React-rendered particles or 
 | ~1.5s | Eye fully open |
 | ~2s | State returns to `calm`; `turtle-petted` class removed; movement resumes |
 
-**Eye animation:** CSS keyframe on `#eye` morphing to a closed-curve shape and back. The `#eye` group will be defined by selecting the relevant SVG paths in the browser devtools.
+**Eye animation:** `transform: scaleY(0)` on the `#eye` group — squishes the eye closed and back open. GPU-compositable via the transform pipeline; avoids SVG path morphing which runs on the main thread.
 
-**Scute shimmer:** The `shimmer-active` class persists on the scute element for 30 minutes (not removed when `petted` ends). CSS keyframe cycles through pearlescent blues, greens, and pinks using `filter: brightness() hue-rotate()`.
+**Scute shimmer:** The `shimmer-active` class persists on the scute element for 30 minutes. The animation is a **brief entrance flash only** (~2–3s): a fast iridescent shimmer that settles into a static pearlescent fill colour. No continuous per-frame work after the entrance — the scute simply sits with a soft static glow for the remainder of the 30 minutes. This avoids running `hue-rotate()` keyframes on up to 10 elements simultaneously for extended periods.
 
 ---
 
