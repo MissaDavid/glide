@@ -81,7 +81,7 @@ export function useTurtleNavigation(turtleState: TurtleState): TurtleNavResult {
       const dt = lastTimeRef.current === null ? 0 : (time - lastTimeRef.current) / 1000
       lastTimeRef.current = time
 
-      if (turtleStateRef.current === 'breathing') return
+      if (turtleStateRef.current === 'breathing' || turtleStateRef.current === 'petted') return
       if (navStateRef.current !== 'swimming') return
 
       const pos = posRef.current
