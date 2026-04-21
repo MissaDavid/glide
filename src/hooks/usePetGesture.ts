@@ -14,7 +14,7 @@ interface UsePetGestureOptions {
 export function usePetGesture({ enabled, onPet }: UsePetGestureOptions) {
   const tapCountRef = useRef(0)
   const windowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const pointerDownTimeRef = useRef(0)
+  const pointerDownTimeRef = useRef<number | null>(null)
   const pointerDownPosRef = useRef({ x: 0, y: 0 })
 
   const resetWindow = useCallback(() => {
@@ -38,7 +38,9 @@ export function usePetGesture({ enabled, onPet }: UsePetGestureOptions) {
     if (!enabled) return
     if ((e.target as Element).closest('#shell-spot')) return
 
+    if (pointerDownTimeRef.current === null) return
     const duration = e.timeStamp - pointerDownTimeRef.current
+    pointerDownTimeRef.current = null
     const dx = e.clientX - pointerDownPosRef.current.x
     const dy = e.clientY - pointerDownPosRef.current.y
     const moved = Math.sqrt(dx * dx + dy * dy)
