@@ -1,19 +1,30 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { usePetGesture } from './usePetGesture'
+import type React from 'react'
 
-function makePointerEvent(overrides: Partial<{
+function makeDownEvent(overrides: Partial<{
   target: Element
-  timeStamp: number
+  isPrimary: boolean
   clientX: number
   clientY: number
-}> = {}) {
+}> = {}): React.PointerEvent<SVGSVGElement> {
   return {
-    target: overrides.target ?? document.createElement('div'),
-    timeStamp: overrides.timeStamp ?? 0,
+    isPrimary: overrides.isPrimary ?? true,
     clientX: overrides.clientX ?? 0,
     clientY: overrides.clientY ?? 0,
+    target: overrides.target ?? document.createElement('path'),
   } as unknown as React.PointerEvent<SVGSVGElement>
+}
+
+function fireDocUp(overrides: PointerEventInit = {}) {
+  document.dispatchEvent(new PointerEvent('pointerup', {
+    isPrimary: true,
+    bubbles: false,
+    clientX: 0,
+    clientY: 0,
+    ...overrides,
+  }))
 }
 
 function makeShellSpotTarget() {
@@ -31,10 +42,10 @@ describe('usePetGesture', () => {
     const { result } = renderHook(() => usePetGesture({ enabled: true, onPet }))
 
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100 }))
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 500 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 600 }))
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
     })
 
     expect(onPet).toHaveBeenCalledTimes(1)
@@ -45,13 +56,13 @@ describe('usePetGesture', () => {
     const { result } = renderHook(() => usePetGesture({ enabled: true, onPet }))
 
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100 }))
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
     })
     act(() => { vi.advanceTimersByTime(1600) })
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 1700 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 1800 }))
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
     })
 
     expect(onPet).not.toHaveBeenCalled()
@@ -64,10 +75,10 @@ describe('usePetGesture', () => {
     document.body.appendChild(spot)
 
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ target: spot, timeStamp: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ target: spot, timeStamp: 100 }))
-      result.current.handlePetPointerDown(makePointerEvent({ target: spot, timeStamp: 500 }))
-      result.current.handlePetPointerUp(makePointerEvent({ target: spot, timeStamp: 600 }))
+      result.current.handlePetPointerDown(makeDownEvent({ target: spot }))
+      fireDocUp()
+      result.current.handlePetPointerDown(makeDownEvent({ target: spot }))
+      fireDocUp()
     })
 
     expect(onPet).not.toHaveBeenCalled()
@@ -79,10 +90,10 @@ describe('usePetGesture', () => {
     const { result } = renderHook(() => usePetGesture({ enabled: false, onPet }))
 
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100 }))
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 500 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 600 }))
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()
     })
 
     expect(onPet).not.toHaveBeenCalled()
@@ -92,11 +103,13 @@ describe('usePetGesture', () => {
     const onPet = vi.fn()
     const { result } = renderHook(() => usePetGesture({ enabled: true, onPet }))
 
+    act(() => { result.current.handlePetPointerDown(makeDownEvent()) })
+    // advance time so duration = 400ms > 300ms threshold
+    vi.advanceTimersByTime(400)
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 400 })) // too long
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 500 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 550 }))
+      fireDocUp()  // duration = 400ms > 300ms → ignored
+      result.current.handlePetPointerDown(makeDownEvent())
+      fireDocUp()  // duration = 0ms → valid, but only 1 tap total
     })
 
     expect(onPet).not.toHaveBeenCalled()
@@ -107,10 +120,10 @@ describe('usePetGesture', () => {
     const { result } = renderHook(() => usePetGesture({ enabled: true, onPet }))
 
     act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0, clientX: 0, clientY: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100, clientX: 50, clientY: 50 })) // moved too far
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 500, clientX: 0, clientY: 0 }))
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 600, clientX: 0, clientY: 0 }))
+      result.current.handlePetPointerDown(makeDownEvent({ clientX: 0, clientY: 0 }))
+      fireDocUp({ clientX: 50, clientY: 50 })  // moved ~70px > 10px limit → ignored
+      result.current.handlePetPointerDown(makeDownEvent({ clientX: 0, clientY: 0 }))
+      fireDocUp({ clientX: 0, clientY: 0 })     // no movement → valid, but only 1 tap
     })
 
     expect(onPet).not.toHaveBeenCalled()
@@ -123,12 +136,22 @@ describe('usePetGesture', () => {
       { initialProps: { enabled: true } }
     )
 
-    act(() => {
-      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
-    })
+    act(() => { result.current.handlePetPointerDown(makeDownEvent()) })
     rerender({ enabled: false })
+    act(() => { fireDocUp() })
+
+    expect(onPet).not.toHaveBeenCalled()
+  })
+
+  it('filters non-primary pointer events (trackpad double-fire)', () => {
+    const onPet = vi.fn()
+    const { result } = renderHook(() => usePetGesture({ enabled: true, onPet }))
+
     act(() => {
-      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100 }))
+      result.current.handlePetPointerDown(makeDownEvent({ isPrimary: false }))
+      fireDocUp()
+      result.current.handlePetPointerDown(makeDownEvent({ isPrimary: false }))
+      fireDocUp()
     })
 
     expect(onPet).not.toHaveBeenCalled()

@@ -32,7 +32,7 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
 
   // enabled must be false when state !== 'calm' so re-entry into petted
   // is impossible while the PET_COMPLETE timer in App.tsx is still running.
-  const { handlePetPointerDown, handlePetPointerUp } = usePetGesture({
+  const { handlePetPointerDown } = usePetGesture({
     enabled: state === 'calm',
     onPet,
   })
@@ -123,7 +123,6 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
             } as CSSProperties}
             aria-label="Sea turtle"
             onPointerDown={(e) => { handlePointerDown(e); handlePetPointerDown(e) }}
-            onPointerUp={handlePetPointerUp}
           />
         </div>
       </div>
