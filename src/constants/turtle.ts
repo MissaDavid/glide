@@ -24,7 +24,6 @@ export const SHELL_SCUTE_IDS: string[] = [
   'shell-scute-23',
   'shell-scute-24',
   'shell-scute-25',
-  // shell-scute-26 was merged into an adjacent region during SVG editing — gap is intentional
-  'shell-scute-27',
+  'shell-scute-26',
   'shell-scute-28',
 ]
