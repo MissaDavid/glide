@@ -30,6 +30,8 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
   const arcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const spotTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // enabled must be false when state !== 'calm' so re-entry into petted
+  // is impossible while the PET_COMPLETE timer in App.tsx is still running.
   const { handlePetPointerDown, handlePetPointerUp } = usePetGesture({
     enabled: state === 'calm',
     onPet,
@@ -69,16 +71,6 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
       if (spotTapTimerRef.current) clearTimeout(spotTapTimerRef.current)
     }
   }, [state, scheduleArc])
-
-  useEffect(() => {
-    const el = svgRef.current
-    if (!el) return
-    if (state === 'petted') {
-      el.classList.add('turtle-petted')
-    } else {
-      el.classList.remove('turtle-petted')
-    }
-  }, [state])
 
   useEffect(() => {
     const svg = svgRef.current

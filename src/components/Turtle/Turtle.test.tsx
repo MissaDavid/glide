@@ -69,6 +69,24 @@ describe('body-part groups accessible in rendered SVG', () => {
   })
 })
 
+describe('petted state behaviour', () => {
+  test('svg has data-state=petted when state is petted', () => {
+    const { container } = render(<Turtle {...baseProps} state="petted" />)
+    const svg = container.querySelector('svg')!
+    expect(svg.dataset.state).toBe('petted')
+  })
+
+  test('applies shimmer-active class to scutes in litScutes', () => {
+    const scuteIds = ['shell-scute-1', 'shell-scute-2']
+    const litScutes = new Set(['shell-scute-1'])
+    const { container } = render(
+      <Turtle {...baseProps} scuteIds={scuteIds} litScutes={litScutes} />
+    )
+    expect(container.querySelector('#shell-scute-1')?.classList.contains('shimmer-active')).toBe(true)
+    expect(container.querySelector('#shell-scute-2')?.classList.contains('shimmer-active')).toBe(false)
+  })
+})
+
 describe('turtle.svg structure', () => {
   let doc: Document
 

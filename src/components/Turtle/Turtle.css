@@ -215,7 +215,7 @@ svg.turtle-svg[data-state='petted'] #head {
   100% { transform: scaleY(1); }
 }
 
-svg.turtle-svg.turtle-petted #eye {
+svg.turtle-svg[data-state='petted'] #eye {
   animation: eye-close-open 2s ease-in-out forwards;
 }
 

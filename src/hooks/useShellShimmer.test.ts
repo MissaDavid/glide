@@ -68,4 +68,11 @@ describe('useShellShimmer', () => {
     const { result } = renderHook(() => useShellShimmer(SCUTE_IDS))
     expect(result.current.litScutes.has('shell-scute-2')).toBe(true)
   })
+
+  it('accumulates scutes across multiple pettings', () => {
+    const { result } = renderHook(() => useShellShimmer(SCUTE_IDS))
+    act(() => { result.current.lightRandomScute() })
+    act(() => { result.current.lightRandomScute() })
+    expect(result.current.litScutes.size).toBe(2)
+  })
 })

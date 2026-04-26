@@ -115,4 +115,22 @@ describe('usePetGesture', () => {
 
     expect(onPet).not.toHaveBeenCalled()
   })
+
+  it('does not fire when enabled flips false mid-gesture', () => {
+    const onPet = vi.fn()
+    const { result, rerender } = renderHook(
+      ({ enabled }: { enabled: boolean }) => usePetGesture({ enabled, onPet }),
+      { initialProps: { enabled: true } }
+    )
+
+    act(() => {
+      result.current.handlePetPointerDown(makePointerEvent({ timeStamp: 0 }))
+    })
+    rerender({ enabled: false })
+    act(() => {
+      result.current.handlePetPointerUp(makePointerEvent({ timeStamp: 100 }))
+    })
+
+    expect(onPet).not.toHaveBeenCalled()
+  })
 })
