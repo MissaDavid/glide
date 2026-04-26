@@ -192,6 +192,11 @@ svg.turtle-svg[data-state='petted'] #shell-spot {
   filter: none;
 }
 
+/* ── Petted: settle from drift to resting position ── */
+svg.turtle-svg[data-state='petted'] {
+  animation: reward-settle 0.5s ease-out forwards;
+}
+
 /* ── Pause group animations during petted state ───── */
 svg.turtle-svg[data-state='petted'] #flipper-fl,
 svg.turtle-svg[data-state='petted'] #flipper-fr,
