@@ -12,8 +12,10 @@ import { useAudio } from './hooks/useAudio'
 import { useTurtleNavigation } from './hooks/useTurtleNavigation'
 import { useCameraState } from './hooks/useCameraState'
 import { usePointerPan } from './hooks/usePointerPan'
+import { useShellShimmer } from './hooks/useShellShimmer'
 import type { PatternName } from './constants/breathingPatterns'
 import { BREATHING_PATTERNS } from './constants/breathingPatterns'
+import { SHELL_SCUTE_IDS } from './constants/turtle'
 
 export default function App() {
   const { state, dispatch } = useTurtleState()
@@ -30,6 +32,7 @@ export default function App() {
   const phaseDuration = currentPhaseConfig?.duration ?? 4
 
   const { posRef, facingRef, worldX, worldY, facing, tilt } = useTurtleNavigation(state)
+  const { litScutes, lightRandomScute } = useShellShimmer(SHELL_SCUTE_IDS)
 
   const worldRef = useRef<HTMLDivElement>(null)
   const { mode, setMode, applyDragDelta } = useCameraState({ turtlePosRef: posRef, facingRef, worldRef })
@@ -70,6 +73,13 @@ export default function App() {
   }, [state, dispatch])
 
   useEffect(() => {
+    if (state !== 'petted') return
+    lightRandomScute()
+    const id = setTimeout(() => dispatch({ type: 'PET_COMPLETE' }), 2000)
+    return () => clearTimeout(id)
+  }, [state, dispatch, lightRandomScute])
+
+  useEffect(() => {
     if (state === 'breathing') playChime()
   }, [phase, state, playChime])
 
@@ -95,6 +105,9 @@ export default function App() {
           phaseDuration={phaseDuration}
           heartRate={hr}
           onSpotTap={() => dispatch({ type: 'HOLD_COMPLETE' })}
+          onPet={() => dispatch({ type: 'PET' })}
+          litScutes={litScutes}
+          scuteIds={SHELL_SCUTE_IDS}
           worldX={worldX}
           worldY={worldY}
           facing={facing}

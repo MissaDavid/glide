@@ -185,8 +185,49 @@ svg.turtle-svg.spot-tapped #shell-spot {
 
 /* ── Shell spot — quiet during active session (visible, non-interactive) ── */
 svg.turtle-svg[data-state='breathing'] #shell-spot,
-svg.turtle-svg[data-state='reward'] #shell-spot {
+svg.turtle-svg[data-state='reward'] #shell-spot,
+svg.turtle-svg[data-state='petted'] #shell-spot {
   pointer-events: none;
   animation: none;
   filter: none;
+}
+
+/* ── Pause group animations during petted state ───── */
+svg.turtle-svg[data-state='petted'] #flipper-fl,
+svg.turtle-svg[data-state='petted'] #flipper-fr,
+svg.turtle-svg[data-state='petted'] #flipper-bl,
+svg.turtle-svg[data-state='petted'] #flipper-br,
+svg.turtle-svg[data-state='petted'] #head {
+  animation: none;
+}
+
+/* ── Pet: eye close/open ────────────────────────── */
+#eye {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes eye-close-open {
+  0%   { transform: scaleY(1); }
+  15%  { transform: scaleY(0); }
+  65%  { transform: scaleY(0); }
+  80%  { transform: scaleY(1); }
+  100% { transform: scaleY(1); }
+}
+
+svg.turtle-svg.turtle-petted #eye {
+  animation: eye-close-open 2s ease-in-out forwards;
+}
+
+/* ── Pet: shell scute shimmer (entrance flash → static glow) ── */
+@keyframes scute-shimmer-entrance {
+  0%   { filter: brightness(1)   hue-rotate(0deg); }
+  15%  { filter: brightness(2)   hue-rotate(0deg); }
+  40%  { filter: brightness(2.2) hue-rotate(120deg); }
+  70%  { filter: brightness(1.8) hue-rotate(240deg); }
+  100% { filter: brightness(1.4) hue-rotate(60deg); }
+}
+
+.shimmer-active {
+  animation: scute-shimmer-entrance 2.5s ease-out forwards;
 }

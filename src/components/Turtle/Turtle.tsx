@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
 import type { TurtleState } from '../../hooks/useTurtleState'
 import type { Phase } from '../../constants/breathingPatterns'
 import type { Facing } from '../../hooks/useTurtleNavigation'
+import { usePetGesture } from '../../hooks/usePetGesture'
 import TurtleSVG from '../../assets/turtle.svg?react'
 import './Turtle.css'
 
@@ -15,16 +16,24 @@ interface TurtleProps {
   phaseDuration: number
   heartRate: number
   onSpotTap: () => void
+  onPet: () => void
+  litScutes: Set<string>
+  scuteIds: string[]
   worldX: number
   worldY: number
   facing: Facing
   tilt: number
 }
 
-export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSpotTap, worldX, worldY, facing, tilt }: TurtleProps) {
+export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSpotTap, onPet, litScutes, scuteIds, worldX, worldY, facing, tilt }: TurtleProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const arcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const spotTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const { handlePetPointerDown, handlePetPointerUp } = usePetGesture({
+    enabled: state === 'calm',
+    onPet,
+  })
 
   const safeBpm = heartRate > 0 ? heartRate : 60
   const pulseDuration = `${parseFloat((Math.min(1.5, Math.max(0.375, 60 / safeBpm))).toFixed(3))}s`
@@ -60,6 +69,30 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
       if (spotTapTimerRef.current) clearTimeout(spotTapTimerRef.current)
     }
   }, [state, scheduleArc])
+
+  useEffect(() => {
+    const el = svgRef.current
+    if (!el) return
+    if (state === 'petted') {
+      el.classList.add('turtle-petted')
+    } else {
+      el.classList.remove('turtle-petted')
+    }
+  }, [state])
+
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!svg) return
+    for (const id of scuteIds) {
+      const el = svg.querySelector(`#${id}`)
+      if (!el) continue
+      if (litScutes.has(id)) {
+        el.classList.add('shimmer-active')
+      } else {
+        el.classList.remove('shimmer-active')
+      }
+    }
+  }, [litScutes, scuteIds])
 
   const handlePointerDown = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (!(e.target as Element).closest('#shell-spot')) return
@@ -97,7 +130,8 @@ export function Turtle({ state, phase, glowLevel, phaseDuration, heartRate, onSp
               '--pulse-duration': pulseDuration,
             } as CSSProperties}
             aria-label="Sea turtle"
-            onPointerDown={handlePointerDown}
+            onPointerDown={(e) => { handlePointerDown(e); handlePetPointerDown(e) }}
+            onPointerUp={handlePetPointerUp}
           />
         </div>
       </div>
